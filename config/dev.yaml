@@ -1,0 +1,8 @@
+num_pokemon: 9
+
+db:
+  user: postgres
+  password: '{{ DB_PASSWORD }}' # jinja templating for an env variable
+  dbname: pokemon
+  host: localhost
+  

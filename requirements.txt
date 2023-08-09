@@ -1,0 +1,4 @@
+pokebase
+requests
+dotenv
+PyYAML
