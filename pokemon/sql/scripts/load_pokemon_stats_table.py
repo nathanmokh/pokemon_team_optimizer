@@ -31,7 +31,6 @@ def load_stats_table():
 
     rows = create_insert_rows(config, currently_loaded_pokemon_stats_ids)
 
-    # convert to list of tuples in string format for insert query
     logging.info(f"Loading pokemon base stats to table, {len(rows)} rows.")
     print(f"Loading pokemon base stats to table, {len(rows)} rows.")
     load_to_stats_table([str(row) for row in rows], connection, cursor)
