@@ -20,3 +20,21 @@ def get_db_connection():
         password=config['db']['password'],
         host=config['db']['host']
     )
+    
+def load_sql(filename: str) -> str:
+    
+    with open(f"pokemon/sql/{filename}", "r") as sql_file:
+        return sql_file.read()
+
+def load_to_stats_table(values, connection, cursor):
+    if not values:
+        return
+    values = ", ".join(values)
+    cursor = connection.cursor()
+    # TODO: substitute with file in sql directory
+    query_template = f"""INSERT INTO stats 
+    (pokemon_id, hp, attack, defense, sp_attack, sp_defense, speed) 
+    VALUES {values};"""
+    cursor.execute(query_template)
+    connection.commit()
+    
