@@ -28,6 +28,8 @@
     </li>
 </ol>
 
+<h2><a href="https://trello.com/b/u5sFBvQs/poke-builder">Trello Board 🥇</a></h2>
+
 <h2>Helpful Documentation:</h2>
 <ul>
     <li><a href="https://pokebase.readthedocs.io/en/latest/">Pokebase Documentation</a></li>
