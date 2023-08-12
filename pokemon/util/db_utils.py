@@ -2,6 +2,7 @@ import psycopg2
 import os
 import yaml
 from jinja2 import Template
+from psycopg2.extras import execute_values
 
 
 
@@ -21,20 +22,30 @@ def get_db_connection():
         host=config['db']['host']
     )
     
-def load_sql(filename: str) -> str:
+def load_sql(filename: str, values: dict={}) -> str:
     
     with open(f"pokemon/sql/{filename}", "r") as sql_file:
-        return sql_file.read()
-
-def load_to_stats_table(values, connection, cursor):
-    if not values:
-        return
-    values = ", ".join(values)
+        sql = sql_file.read()
+        if values:
+            sql = sql.format(**values)
+        sql = sql.replace("'NULL'", 'NULL')
+        sql = sql.replace('"NULL"', 'NULL')
+    return sql
+    
+def execute_sql(filename: str, substitutions: dict={}, is_ddl_statement: bool=False):
+    """Main method for executing sql scripts in the sql directory, DDL statements are statements that 
+    don't return rows like a CREATE TABLE statement"""
+    
+    connection = get_db_connection()
     cursor = connection.cursor()
-    # TODO: substitute with file in sql directory
-    query_template = f"""INSERT INTO stats 
-    (pokemon_id, hp, attack, defense, sp_attack, sp_defense, speed) 
-    VALUES {values};"""
-    cursor.execute(query_template)
+    sql = load_sql(filename, substitutions)
+    cursor.execute(sql)
     connection.commit()
+
+    if is_ddl_statement: return
+    
+    results = cursor.fetchall()
+    connection.close()
+    return results
+    
     
