@@ -25,13 +25,7 @@ def load_pokemon_table():
         return pokemon_data['name']
     
     def create_rows():
-        rows = []
-        for pokemon_id in range(1, config['num_pokemon'] + 1):
-            if pokemon_id in currently_loaded_pokemon_ids:
-                continue
-            rows.append(get_pokemon(pokemon_id))
-            print(f"Row created for pokemon {pokemon_id}")
-    
+        rows = [get_pokemon(pokemon_id) for pokemon_id in range(1, config['num_pokemon'] + 1) if pokemon_id not in currently_loaded_pokemon_ids]    
         return ', '.join(str(row) for row in rows)
         
         
@@ -40,11 +34,10 @@ def load_pokemon_table():
     def get_pokemon(pokemon_id: int) -> dict:
         URL = f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}"
         pokemon_data = requests.get(URL).json()
-        official_artwork_default, official_artwork_shiny = get_official_artwork(pokemon_data)
         type1, type2 = get_types(pokemon_data)
         role = get_role(pokemon_id)
-        official_artwork_default, official_artwork_shiny = get_official_artwork(pokemon_data)
         name = get_name(pokemon_data)
+        print(f"Generated row for pokemon {pokemon_id}")
         return (
             pokemon_id,
             name,

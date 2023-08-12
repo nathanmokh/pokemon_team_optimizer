@@ -39,13 +39,17 @@ def execute_sql(filename: str, substitutions: dict={}, is_ddl_statement: bool=Fa
     connection = get_db_connection()
     cursor = connection.cursor()
     sql = load_sql(filename, substitutions)
-    cursor.execute(sql)
-    connection.commit()
+    try:
+        cursor.execute(sql)
+        connection.commit()
 
+    except Exception as e:
+        print()
+        print(e.args[0])
+    
     if is_ddl_statement: return
     
     results = cursor.fetchall()
     connection.close()
     return results
-    
     
