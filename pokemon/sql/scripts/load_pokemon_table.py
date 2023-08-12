@@ -50,9 +50,7 @@ def load_pokemon_table():
             name,
             type1,
             type2,
-            role,
-            official_artwork_default,
-            official_artwork_shiny
+            role
         )
         
     
