@@ -1,6 +1,6 @@
 import requests
 import logging
-from pokemon.util.db_utils import get_db_connection, load_sql, load_to_stats_table
+from pokemon.util.db_utils import execute_sql
 from pokemon.util.common_utils import get_config
 
 def load_stats_table():
@@ -21,20 +21,19 @@ def load_stats_table():
         return [stat['base_stat'] for stat in stats]
     
     config = get_config()
-    connection = get_db_connection()
-    cursor = connection.cursor()
     
-    # Query to prevent duplicates
-    prevent_dupes_query = load_sql("get_pokemon_ids_from_stats_tbl.sql")
-    cursor.execute(prevent_dupes_query)
-    currently_loaded_pokemon_stats_ids = [record[0] for record in cursor.fetchall()]
-
+    # create stats table if none exists
+    execute_sql("create_stats_table.sql", is_ddl_statement=True)
+    # get currently loaded IDs to prevent creating duplicate rows
+    currently_loaded_pokemon_stats_ids = [record[0] for record in execute_sql("get_pokemon_ids_from_stats_tbl.sql")] 
+    # create rows
     rows = create_insert_rows(config, currently_loaded_pokemon_stats_ids)
 
     logging.info(f"Loading pokemon base stats to table, {len(rows)} rows.")
     print(f"Loading pokemon base stats to table, {len(rows)} rows.")
-    load_to_stats_table([str(row) for row in rows], connection, cursor)
-    connection.close()
+    formatted_insert_rows = ', '.join(str(tuple(row)) for row in rows)
+    
+    execute_sql('populate_stats_table.sql', {'rows': formatted_insert_rows}, is_ddl_statement=True)
     
  
         

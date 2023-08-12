@@ -5,10 +5,9 @@ CREATE TABLE IF NOT EXISTS stats (
     defense INTEGER,
     sp_attack INTEGER,
     sp_defense INTEGER,
-    speed INTEGER,
-    generation INTEGER
+    speed INTEGER
 );
 
 INSERT INTO stats 
     (pokemon_id, hp, attack, defense, sp_attack, sp_defense, speed) 
-VALUES {values};
+VALUES {rows};

@@ -5,6 +5,5 @@ CREATE TABLE IF NOT EXISTS stats (
     defense INTEGER,
     sp_attack INTEGER,
     sp_defense INTEGER,
-    speed INTEGER,
-    generation INTEGER
+    speed INTEGER
 );
