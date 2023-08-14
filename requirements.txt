@@ -4,3 +4,4 @@ python-dotenv
 pokebase
 psycopg2
 jinja2
+psycopg2-binary
