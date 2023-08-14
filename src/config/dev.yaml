@@ -5,4 +5,5 @@ db:
   password: '{{ DB_PASSWORD }}' # jinja templating for an env variable
   dbname: pokemon
   host: localhost
+  port: 5432
   
