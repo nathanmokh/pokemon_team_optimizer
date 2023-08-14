@@ -1,7 +1,7 @@
 import requests
 import logging
-from pokemon.util.db_utils import execute_sql
-from pokemon.util.common_utils import get_config
+from src.pokemon.util.db_utils import execute_sql
+from src.pokemon.util.common_utils import get_config
 
 
 def load_stats_table():
@@ -35,11 +35,12 @@ def load_stats_table():
     print(f"Loading pokemon base stats to table, {len(rows)} rows.")
     formatted_insert_rows = ", ".join(str(tuple(row)) for row in rows)
 
-    execute_sql(
-        "populate_stats_table.sql",
-        {"rows": formatted_insert_rows},
-        is_ddl_statement=True,
-    )
+    if rows:
+        execute_sql(
+            "populate_stats_table.sql",
+            {"rows": formatted_insert_rows},
+            is_ddl_statement=True,
+        )
 
 
 if __name__ == "__main__":
