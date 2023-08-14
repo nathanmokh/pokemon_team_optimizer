@@ -7,6 +7,4 @@ INSERT INTO
         team_role
     )
 VALUES
-    {
-values
-    };
+{values};

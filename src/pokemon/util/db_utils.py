@@ -10,7 +10,7 @@ from jinja2 import Template
 def get_db_connection():
     """returns a psycopg2 connection object to the database in config"""
 
-    with open(f"config/{os.environ.get('ENV')}.yaml", "r") as f:
+    with open(f"src/config/{os.environ.get('ENV')}.yaml", "r") as f:
         template = Template(f.read())
         rendered_yaml = template.render(DB_PASSWORD=os.environ.get("DB_PASSWORD"))
     config = yaml.safe_load(rendered_yaml)
@@ -24,7 +24,7 @@ def get_db_connection():
 
 
 def load_sql(filename: str, values: dict = {}) -> str:
-    with open(f"pokemon/sql/{filename}", "r") as sql_file:
+    with open(f"src/pokemon/sql/{filename}", "r") as sql_file:
         sql = sql_file.read()
         if values:
             sql = sql.format(**values)
