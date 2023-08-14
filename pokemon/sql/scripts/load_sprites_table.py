@@ -1,6 +1,6 @@
 import requests
 import logging
-from pokemon.util.db_utils import execute_sql, get_db_connection, load_sql
+from pokemon.util.db_utils import execute_sql
 from pokemon.util.common_utils import get_config
 
 def load_sprites_table():

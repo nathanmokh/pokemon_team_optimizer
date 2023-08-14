@@ -1,7 +1,7 @@
 -- TODO: Implement
 
 CREATE TABLE IF NOT EXISTS sprites (
-    pokemon_id INTEGER PRIMARY KEY
+    pokemon_id INTEGER PRIMARY KEY,
 );
 
 INSERT INTO sprites 
