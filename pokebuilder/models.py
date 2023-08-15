@@ -1,14 +1,9 @@
 from sqlalchemy import ForeignKey, Column, Integer, String
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
-from pokemon.util.config import get_config
+from extensions import db
 
 
-Base = declarative_base()
-config = get_config()
-
-
-class Pokemon(Base):
+class Pokemon(db.Model):
     __tablename__ = "pokemon"
 
     id = Column(Integer, primary_key=True)
@@ -20,7 +15,7 @@ class Pokemon(Base):
     stats = relationship("Stats", back_populates="pokemon")
 
 
-class Stats(Base):
+class Stats(db.Model):
     __tablename__ = "stats"
 
     pokemon_id = Column(Integer, ForeignKey("pokemon.id"), primary_key=True)

@@ -1,3 +1,11 @@
 README.md
 .vscode/*
 .github/*
+.gitignore
+
+.env
+.envrc
+
+docker-compose.yml
+
+requirements-test.txt
