@@ -1,5 +1,5 @@
 <h1> Poke-Builder </h1>
-<p><i>By: Nathan Mokhtarzadeh, Jonah Mokhtarzadeh, Zachary Mokhtarzadeh</i></p>
+<p><i>By: Nathan Mokhtarzadeh, Jonah Mokhtarzadeh, Zachary Mokhtarzadeh, David Golshirazian</i></p>
 
 <h2>A pokemon team builder project!</h2>
 <p> The purpose of this project is to create a team builder/optimizer for pokemon. Feature suggestions are welcome, the goal is to build a system that will auto update with the newest pokemon from the PokeAPI, and be able to create the "optimal" team given certain parameters and constraints. We are using a wrapper for the Pokemon API called <a href="https://github.com/PokeAPI/pokebase">Pokebase</a> Pokebase comes with auto caching which will be a significant performance boost over using the PokeAPI directly.
