@@ -33,9 +33,7 @@ def load_sql(filename: str, values: dict = {}) -> str:
     return sql
 
 
-def execute_sql(
-    filename: str, substitutions: dict = {}, is_ddl_statement: bool = False
-):
+def execute_sql(filename: str, substitutions: dict = {}):
     """Main method for executing sql scripts in the sql directory, DDL statements are statements that
     don't return rows like a CREATE TABLE statement"""
 
@@ -45,7 +43,7 @@ def execute_sql(
     cursor.execute(sql)
     connection.commit()
 
-    if is_ddl_statement:
+    if cursor.rowcount == -1:
         return
 
     results = cursor.fetchall()

@@ -50,7 +50,7 @@ def load_pokemon_table():
     config = get_config()
 
     # Query to prevent duplicates
-    execute_sql("create_pokemon_table.sql", is_ddl_statement=True)
+    execute_sql("create_pokemon_table.sql")
     currently_loaded_pokemon_ids = execute_sql("get_pokemon_ids_from_pokemon_table.sql")
     currently_loaded_pokemon_ids = {
         record[0]: None for record in currently_loaded_pokemon_ids
