@@ -62,7 +62,6 @@ def load_pokemon_table():
         execute_sql(
             "populate_pokemon_table.sql",
             substitutions={"values": rows},
-            is_ddl_statement=True,
         )
 
 
