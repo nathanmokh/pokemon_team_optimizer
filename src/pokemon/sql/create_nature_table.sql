@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS pokemon_natures (
+CREATE TABLE IF NOT EXISTS nature (
     id INTEGER PRIMARY KEY,
     name VARCHAR(50),
     increased_stat VARCHAR(15),
