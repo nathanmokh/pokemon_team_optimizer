@@ -6,7 +6,7 @@ from src.pokemon.util.db_utils import execute_sql
 def load_moves_table():
     def create_rows_moves_tbl(currently_loaded_moves, num_moves):
         rows = []
-        for move_id in range(1, num_moves):
+        for move_id in range(num_moves):
             if move_id in currently_loaded_moves:
                 continue
             move = get_move(move_id)
@@ -23,9 +23,9 @@ def load_moves_table():
         if move_data["meta"]:
             return move_data["meta"]["stat_chance"]
 
-    def get_move_effect(move_data):
+    def get_move_effect_description(move_data):
         if move_data["effect_entries"]:
-            return move_data["effect_entries"][0]["effect"]
+            return move_data["effect_entries"][0]["effect"].replace("'", "")
 
     def get_effect_chance(move_data):
         if move_data["effect_chance"]:
@@ -60,7 +60,7 @@ def load_moves_table():
             "priority": move_data["priority"],
             "description": "NULL",  # TODO: fill in
             "effect_chance": get_effect_chance(move_data),
-            "effect_description": get_move_effect(move_data),
+            "effect_description": get_move_effect_description(move_data),
             "healing_percentage": "NULL",  # TODO: fill in
             "damage_class": move_data["damage_class"]["name"],
             "category": "NULL",  # TODO: fill in, see if necessary
@@ -90,7 +90,7 @@ def load_moves_table():
         execute_sql("populate_moves_table.sql", {"rows": formatted_insert_rows})
 
         # TODO: name junction table PokemonMoveMapping
-        execute_sql("populate_pokemon_move_mapping.sql")
+        # execute_sql("populate_pokemon_move_mapping.sql")
 
 
 if __name__ == "__main__":

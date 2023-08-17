@@ -26,7 +26,6 @@ def get_db_connection():
 def load_sql(filename: str, values: dict = {}) -> str:
     with open(f"src/pokemon/sql/{filename}", "r") as sql_file:
         sql = sql_file.read()
-        sql = sql.replace("\\'", "'")
         if values:
             sql = sql.format(**values)
         sql = sql.replace("'NULL'", "NULL")

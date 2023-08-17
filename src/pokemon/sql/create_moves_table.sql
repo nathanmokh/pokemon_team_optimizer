@@ -6,9 +6,9 @@ CREATE TABLE IF NOT EXISTS moves (
     accuracy INTEGER,
     pp INTEGER,
     priority INTEGER,
-    description VARCHAR(512),
+    description VARCHAR(4096),
     effect_chance INTEGER,
-    effect_description VARCHAR(512),
+    effect_description VARCHAR(4096), -- metronome description long as hell
     healing_percentage INTEGER,
     damage_class VARCHAR(32),
     -- replace with enum in future
