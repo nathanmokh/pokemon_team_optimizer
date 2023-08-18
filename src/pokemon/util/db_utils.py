@@ -34,8 +34,8 @@ def load_sql(filename: str, values: dict = {}) -> str:
     return sql
 
 
-def execute_sql(filename: str="", substitutions: dict = {}, raw_sql=""):
-    """Main method for executing sql scripts in the sql directory, if a sql string is given in the 
+def execute_sql(filename: str = "", substitutions: dict = {}, raw_sql=""):
+    """Main method for executing sql scripts in the sql directory, if a sql string is given in the
     raw_sql argument, it will override any sql file mentioned in the filename"""
 
     connection = get_db_connection()
@@ -47,7 +47,7 @@ def execute_sql(filename: str="", substitutions: dict = {}, raw_sql=""):
     cursor.execute(sql)
     connection.commit()
 
-    if cursor.rowcount == -1 or 'INSERT' in cursor.statusmessage:
+    if cursor.rowcount == -1 or "INSERT" in cursor.statusmessage:
         return
 
     results = cursor.fetchall()

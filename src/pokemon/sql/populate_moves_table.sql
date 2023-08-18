@@ -9,7 +9,6 @@ INSERT INTO
         priority,
         description,
         effect_chance,
-        effect_description,
         healing_percentage,
         damage_class,
         category,

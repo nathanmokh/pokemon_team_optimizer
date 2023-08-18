@@ -58,9 +58,8 @@ def load_moves_table():
             "accuracy": move_data["accuracy"],
             "pp": move_data["pp"],
             "priority": move_data["priority"],
-            "description": "NULL",  # TODO: fill in
+            "description": get_move_effect_description(move_data),
             "effect_chance": get_effect_chance(move_data),
-            "effect_description": get_move_effect_description(move_data),
             "healing_percentage": "NULL",  # TODO: fill in
             "damage_class": move_data["damage_class"]["name"],
             "category": "NULL",  # TODO: fill in, see if necessary
