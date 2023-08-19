@@ -1,7 +1,7 @@
 Flask
 Flask-SQLAlchemy
+psycopg2
 jinja2
 PyYAML
 requests
-python-dotenv
 pokebase

@@ -10,6 +10,10 @@ RUN apt-get update && apt-get install -y \
     postgresql \
     libpq-dev
 
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-CMD flask --app pokebuilder/app run
+COPY pokebuilder ./pokebuilder
+
+EXPOSE 5000
+CMD flask --app pokebuilder/app run 
