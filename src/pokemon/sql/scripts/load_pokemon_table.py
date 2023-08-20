@@ -1,7 +1,10 @@
 import requests
 import logging
 from src.pokemon.util.db_utils import execute_sql, get_db_connection, load_sql
-from src.pokemon.util.common_utils import get_config
+from src.pokemon.util.common_utils import (
+    get_config,
+    get_current_number_of_pokemon_pokeapi,
+)
 
 
 def load_pokemon_table():
@@ -22,8 +25,9 @@ def load_pokemon_table():
         return pokemon_data["name"]
 
     def create_rows():
+        num_pokemon = get_current_number_of_pokemon_pokeapi()
         rows = []
-        for pokemon_id in range(1, config["num_pokemon"] + 1):
+        for pokemon_id in range(1, num_pokemon + 1):
             if pokemon_id in currently_loaded_pokemon_ids:
                 continue
             rows.append(get_pokemon(pokemon_id))
@@ -47,10 +51,8 @@ def load_pokemon_table():
             role,
         )
 
-    config = get_config()
-
     # Query to prevent duplicates
-    execute_sql("create_pokemon_table.sql", is_ddl_statement=True)
+    execute_sql("create_pokemon_table.sql")
     currently_loaded_pokemon_ids = execute_sql("get_pokemon_ids_from_pokemon_table.sql")
     currently_loaded_pokemon_ids = {
         record[0]: None for record in currently_loaded_pokemon_ids
@@ -62,7 +64,6 @@ def load_pokemon_table():
         execute_sql(
             "populate_pokemon_table.sql",
             substitutions={"values": rows},
-            is_ddl_statement=True,
         )
 
 

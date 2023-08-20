@@ -23,7 +23,7 @@ def load_stats_table():
     config = get_config()
 
     # create stats table if none exists
-    execute_sql("create_stats_table.sql", is_ddl_statement=True)
+    execute_sql("create_stats_table.sql")
     # get currently loaded IDs to prevent creating duplicate rows
     currently_loaded_pokemon_stats_ids = [
         record[0] for record in execute_sql("get_pokemon_ids_from_stats_tbl.sql")
