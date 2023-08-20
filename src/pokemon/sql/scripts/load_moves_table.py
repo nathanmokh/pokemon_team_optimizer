@@ -92,7 +92,6 @@ def load_moves_table():
     execute_sql("create_moves_mapping.sql")
 
 
-# TODO: NATHAN - there are duplicates being added, can't get an accurate query for moves for a given game
 def load_moves_junction_table():
     def create_all_rows():
         # iterate over all pokemon in pokemon table
