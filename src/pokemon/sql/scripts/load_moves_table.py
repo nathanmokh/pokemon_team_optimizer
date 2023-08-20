@@ -89,7 +89,6 @@ def load_moves_table():
     if rows:
         execute_sql("populate_moves_table.sql", {"rows": formatted_insert_rows})
 
-    # TODO: name junction table PokemonMoveMapping
     execute_sql("create_moves_mapping.sql")
 
 
@@ -134,8 +133,6 @@ def load_moves_junction_table():
                 "level_learned": int(details["level_learned_at"]),
                 "learn_method": details["move_learn_method"]["name"],
                 "game_version": details["version_group"]["name"],
-                # TODO: delete me, for debug
-                # "move_name_deleteme": move['move']['name']
             }
             rows_set.append(row)
         return rows_set
