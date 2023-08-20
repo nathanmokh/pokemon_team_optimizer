@@ -4,6 +4,8 @@ import os
 import requests
 from urllib.parse import urlparse
 
+from src.pokemon.util.db_utils import execute_sql
+
 
 def get_config():
     with open(f"src/config/{os.environ.get('ENV')}.yaml", "r") as f:
@@ -26,5 +28,7 @@ def parse_id_from_end_of_url(url):
     return path.split("/")[-1]
 
 
-def make_request():
-    pass
+def get_currently_loaded_pokemon_move_ids():
+    return [
+        record[0] for record in execute_sql(raw_sql="SELECT move_id FROM moves;")
+    ]
