@@ -11,10 +11,10 @@ class MoveTableLoader:
         self.populate_rows_table_query = "populate_moves_table.sql"
         self.all_moves_request_url = "https://pokeapi.co/api/v2/move/"
 
-    def _create_rows(self, currently_loaded_moves, num_moves):
+    def _create_rows(self, currently_loaded_move_ids, num_moves):
         rows = []
         for move_id in range(1, num_moves):
-            if move_id in currently_loaded_moves:
+            if move_id in currently_loaded_move_ids:
                 continue
             move = self._get_move(move_id)
             if move:
