@@ -1,6 +1,10 @@
 import requests
 import logging
+from src.pokemon.util.common_utils import (
+    parse_id_from_end_of_url,
+)
 from src.pokemon.util.db_utils import execute_sql
+from time import time
 
 
 def load_moves_table():
@@ -38,9 +42,6 @@ def load_moves_table():
             return move_data["meta"]["drain"]
         else:
             return "NULL"
-
-    def create_insert_rows_junction_tbl(currently_loaded_moves):
-        pass
 
     def get_move(move_id):
         URL = f"https://pokeapi.co/api/v2/move/{move_id}"
@@ -88,9 +89,64 @@ def load_moves_table():
     if rows:
         execute_sql("populate_moves_table.sql", {"rows": formatted_insert_rows})
 
-        # TODO: name junction table PokemonMoveMapping
-        # execute_sql("populate_pokemon_move_mapping.sql")
+    # TODO: name junction table PokemonMoveMapping
+    execute_sql("create_moves_mapping.sql")
+
+
+# TODO: NATHAN - there are duplicates being added, can't get an accurate query for moves for a given game
+def load_moves_junction_table():
+    def create_all_rows():
+        # iterate over all pokemon in pokemon table
+        pokemon_ids = execute_sql(raw_sql="SELECT id FROM pokemon")
+        pokemon_ids = [data[0] for data in pokemon_ids]
+
+        rows = []
+        for pokemon_id in pokemon_ids:
+            URL = f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}"
+            response = requests.get(URL)
+
+            if response.status_code != 200:
+                print(f"Data for pokemon id {pokemon_id} not found, skipping.")
+                continue
+
+            move_data = response.json()["moves"]
+
+            for move in move_data:
+                rows.extend(create_rows_set_from_move(move, pokemon_id))
+            print(f"Done loading moves for pokemon {pokemon_id}")
+        return rows
+
+    def format_rows(rows):
+        # convert to string represented tuples with only the values
+        list_of_tuples = [str(tuple(row.values())) for row in rows]
+        return ", ".join(list_of_tuples)
+
+    start = time()
+
+    def create_rows_set_from_move(move, pokemon_id):
+        rows_set = []
+        move_id = parse_id_from_end_of_url(move["move"]["url"])
+        version_group_details = move["version_group_details"]
+        for details in version_group_details:
+            row = {
+                "move_id": int(move_id),
+                "pokemon_id": pokemon_id,
+                "level_learned": int(details["level_learned_at"]),
+                "learn_method": details["move_learn_method"]["name"],
+                "game_version": details["version_group"]["name"],
+                # TODO: delete me, for debug
+                # "move_name_deleteme": move['move']['name']
+            }
+            rows_set.append(row)
+        return rows_set
+
+    # create PokemonMovesMapping table
+    execute_sql("create_moves_mapping.sql")
+    rows = create_all_rows()
+    rows = format_rows(rows)
+    execute_sql("populate_move_mapping_table.sql", substitutions={"rows": rows})
 
 
 if __name__ == "__main__":
     load_moves_table()
+    load_moves_junction_table()

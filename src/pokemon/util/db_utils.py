@@ -1,9 +1,7 @@
+from ast import List
 import os
 import yaml
-
 import psycopg2
-from psycopg2.extras import execute_values
-
 from jinja2 import Template
 
 
