@@ -3,7 +3,7 @@ README.md
 .github/*
 .gitignore
 
-*.env
+*.*env
 *.envrc
 
 docker-compose.yml
