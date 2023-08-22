@@ -1,7 +1,6 @@
 import requests
 import logging
 from src.pokemon.util.common_utils import get_currently_loaded_pokemon_move_ids
-
 from src.pokemon.util.db_utils import execute_sql
 
 
@@ -46,6 +45,12 @@ class MoveTableLoader:
         else:
             return "NULL"
 
+    def _get_category(self, move_data):
+        if move_data["meta"]:
+            return move_data["meta"]["category"]["name"]
+        else:
+            return "NULL"
+
     def _get_move(self, move_id):
         URL = f"https://pokeapi.co/api/v2/move/{move_id}"
         request = requests.get(URL)
@@ -58,7 +63,7 @@ class MoveTableLoader:
             "move_id": move_id,
             "move_name": move_data["name"],
             "move_type": move_data["type"]["name"],
-            "power": move_data["power"],
+            "power": move_data.get("power", "NULL"),
             "accuracy": move_data["accuracy"],
             "pp": move_data["pp"],
             "priority": move_data["priority"],
@@ -66,7 +71,7 @@ class MoveTableLoader:
             "effect_chance": self._get_effect_chance(move_data),
             "healing_percentage": "NULL",  # TODO: fill in
             "damage_class": move_data["damage_class"]["name"],
-            "category": "NULL",  # TODO: fill in, see if necessary
+            "category": self._get_category(move_data),
             "crit_rate": self._get_crit_rate(move_data),
             "stat_chance": self._get_stat_chance(move_data),
             "drain": self._get_drain(move_data),
@@ -89,6 +94,8 @@ class MoveTableLoader:
 
         if rows:
             execute_sql(self.populate_rows_table_query, {"rows": formatted_insert_rows})
+        else:
+            print(f"No rows created.")
 
 
 if __name__ == "__main__":
