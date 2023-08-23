@@ -34,4 +34,37 @@ class Stats(Base):
     pokemon = relationship("Pokemon", back_populates="stats")
 
 
-# Repeat the same pattern for other related classes...
+class Moves(Base):
+    __tablename__ = "moves"
+
+    move_id = Column(Integer)
+    move_name = Column(String)
+    move_type = Column(String)
+    power = Column(Integer)
+    accuracy = Column(Integer)
+    pp = Column(Integer)
+    priority = Column(Integer)
+    description = Column(String)
+    effect_chance = Column(Integer)
+    healing_percentage = Column(Integer)
+    damage_class = Column(String)
+    category = Column(String)
+    crit_rate = Column(Integer)
+    stat_chance = Column(Integer)
+    drain = Column(Integer)
+
+    pokemon = relationship("Pokemon", back_populates="moves")
+
+
+class PokemonMovesMapping(Base):
+    __tablename__ = "pokemonmovesmapping"
+
+    move_id = Column(
+        Integer, ForeignKey("pokemonmovesmapping.move_id"), primary_key=True
+    )
+    pokemon_id = Column(Integer)
+    level_learned = Column(Integer)
+    learn_method = Column(String)
+    game_version = Column(String)
+
+    pokemon = relationship("Pokemon", back_populates="pokemonmovesmapping")

@@ -1,13 +1,16 @@
 import requests
 import logging
 from src.pokemon.util.db_utils import execute_sql
-from src.pokemon.util.common_utils import get_config
+from src.pokemon.util.common_utils import (
+    get_config,
+    get_current_number_of_pokemon_pokeapi,
+)
 
 
 def load_stats_table():
-    def create_insert_rows(config, currently_loaded_pokemon):
+    def create_insert_rows(currently_loaded_pokemon):
         fetched_data = []
-        for pokemon_id in range(1, config["num_pokemon"] + 1):
+        for pokemon_id in range(1, get_current_number_of_pokemon_pokeapi()):
             if pokemon_id in currently_loaded_pokemon:
                 continue
             stats = get_pokemon_stats(pokemon_id)
@@ -23,13 +26,13 @@ def load_stats_table():
     config = get_config()
 
     # create stats table if none exists
-    execute_sql("create_stats_table.sql", is_ddl_statement=True)
+    execute_sql("create_stats_table.sql")
     # get currently loaded IDs to prevent creating duplicate rows
     currently_loaded_pokemon_stats_ids = [
         record[0] for record in execute_sql("get_pokemon_ids_from_stats_tbl.sql")
     ]
     # create rows
-    rows = create_insert_rows(config, currently_loaded_pokemon_stats_ids)
+    rows = create_insert_rows(currently_loaded_pokemon_stats_ids)
 
     logging.info(f"Loading pokemon base stats to table, {len(rows)} rows.")
     print(f"Loading pokemon base stats to table, {len(rows)} rows.")
@@ -38,8 +41,7 @@ def load_stats_table():
     if rows:
         execute_sql(
             "populate_stats_table.sql",
-            {"rows": formatted_insert_rows},
-            is_ddl_statement=True,
+            {"rows": formatted_insert_rows}
         )
 
 
