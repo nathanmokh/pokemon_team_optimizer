@@ -10,7 +10,8 @@ SELECT
     m.pp,
     m.accuracy,
     m.category,
-    m.crit_rate
+    m.crit_rate,
+    m.damage_class
 FROM
     pokemon p
     JOIN pokemonmovesmapping pmm ON p.id = pmm.pokemon_id
