@@ -39,10 +39,7 @@ def load_stats_table():
     formatted_insert_rows = ", ".join(str(tuple(row)) for row in rows)
 
     if rows:
-        execute_sql(
-            "populate_stats_table.sql",
-            {"rows": formatted_insert_rows}
-        )
+        execute_sql("populate_stats_table.sql", {"rows": formatted_insert_rows})
 
 
 if __name__ == "__main__":
