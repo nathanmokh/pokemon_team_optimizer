@@ -3,34 +3,40 @@ from src.pokemon.util.common_utils import parse_id_from_end_of_url
 from src.pokemon.util.db_utils import execute_sql
 
 
-def load_moves_junction_table():
-    def create_all_rows():
+class MoveMappingTableLoader:
+    def __init__(self) -> None:
+        self.moves_mapping_table_creation_query = "create_moves_mapping.sql"
+        self.populate_rows_mapping_table_query = "populate_move_mapping_table.sql"
+
+    def get_move_data(self, pokemon_id: int) -> dict:
+        URL = f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}"
+        response = requests.get(URL)
+
+        if response.status_code != 200:
+            print(f"Data for pokemon id {pokemon_id} not found, skipping.")
+            return {}
+
+        return response.json()["moves"]
+
+    def create_mapping_rows(self):
         # iterate over all pokemon in pokemon table
         pokemon_ids = execute_sql(raw_sql="SELECT id FROM pokemon")
         pokemon_ids = [data[0] for data in pokemon_ids]
 
         rows = []
         for pokemon_id in pokemon_ids:
-            URL = f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}"
-            response = requests.get(URL)
+            # move_data = response.json()["moves"]
+            move_data = self.get_move_data(pokemon_id)
 
-            if response.status_code != 200:
-                print(f"Data for pokemon id {pokemon_id} not found, skipping.")
+            if not move_data:
                 continue
 
-            move_data = response.json()["moves"]
-
             for move in move_data:
-                rows.extend(create_rows_set_from_move(move, pokemon_id))
+                rows.extend(self.create_rows_set_from_move(move, pokemon_id))
             print(f"Done loading moves for pokemon {pokemon_id}")
-        return rows
+        return self.format_rows(rows)
 
-    def format_rows(rows):
-        # convert to string represented tuples with only the values
-        list_of_tuples = [str(tuple(row.values())) for row in rows]
-        return ", ".join(list_of_tuples)
-
-    def create_rows_set_from_move(move, pokemon_id):
+    def create_rows_set_from_move(self, move: dict, pokemon_id: int):
         rows_set = []
         move_id = parse_id_from_end_of_url(move["move"]["url"])
         version_group_details = move["version_group_details"]
@@ -45,12 +51,19 @@ def load_moves_junction_table():
             rows_set.append(row)
         return rows_set
 
-    # create PokemonMovesMapping table
-    execute_sql("create_moves_mapping.sql")
-    rows = create_all_rows()
-    rows = format_rows(rows)
-    execute_sql("populate_move_mapping_table.sql", substitutions={"rows": rows})
+    def format_rows(self, rows):
+        # convert to string represented tuples with only the values
+        list_of_tuples = [str(tuple(row.values())) for row in rows]
+        return ", ".join(list_of_tuples)
+
+    def run(self):
+        execute_sql(self.moves_mapping_table_creation_query)
+        rows = self.create_mapping_rows()
+        if rows:
+            execute_sql(
+                self.populate_rows_mapping_table_query, substitutions={"rows": rows}
+            )
 
 
 if __name__ == "__main__":
-    load_moves_junction_table()
+    MoveMappingTableLoader().run()
