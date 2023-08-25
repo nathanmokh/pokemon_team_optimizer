@@ -1,9 +1,16 @@
--- TODO: Implement
-
-CREATE TABLE IF NOT EXISTS sprites (
-    pokemon_id INTEGER PRIMARY KEY,
-);
-
-INSERT INTO sprites 
-    (pokemon_id, hp, attack, defense, sp_attack, sp_defense, speed) 
-VALUES {rows};
+INSERT INTO
+    sprites (
+        pokemon_id,
+        official_artwork,
+        official_artwork_shiny,
+        back_default,
+        back_female,
+        front_default,
+        front_female,
+        back_shiny,
+        back_shiny_female,
+        front_shiny,
+        front_shiny_female
+    )
+VALUES
+    {rows};

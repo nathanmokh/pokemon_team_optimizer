@@ -1,4 +1,3 @@
-from ast import List
 import os
 import yaml
 import psycopg2
