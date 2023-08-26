@@ -1,6 +1,9 @@
 from sqlalchemy import ForeignKey, Column, Integer, String
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 from extensions import db
+
+Base = declarative_base()
 
 
 class Pokemon(db.Model):
@@ -13,6 +16,7 @@ class Pokemon(db.Model):
     team_role = Column(String)
 
     stats = relationship("Stats", back_populates="pokemon")
+    moves = relationship("PokemonMovesMapping", back_populates="pokemon")
 
 
 class Stats(db.Model):
@@ -29,10 +33,10 @@ class Stats(db.Model):
     pokemon = relationship("Pokemon", back_populates="stats")
 
 
-class Moves(Base):
+class Moves(db.Model):
     __tablename__ = "moves"
 
-    move_id = Column(Integer)
+    move_id = Column(Integer, primary_key=True)
     move_name = Column(String)
     move_type = Column(String)
     power = Column(Integer)
@@ -48,18 +52,22 @@ class Moves(Base):
     stat_chance = Column(Integer)
     drain = Column(Integer)
 
-    pokemon = relationship("Pokemon", back_populates="moves")
+    # pokemon_moves_mapping_id = Column(
+    #     Integer, ForeignKey("pokemonmovesmapping.move_id")
+    # )
+    # pokemon = relationship("PokemonMovesMapping", back_populates="moves")
 
 
-class PokemonMovesMapping(Base):
+class PokemonMovesMapping(db.Model):
     __tablename__ = "pokemonmovesmapping"
 
-    move_id = Column(
-        Integer, ForeignKey("pokemonmovesmapping.move_id"), primary_key=True
-    )
-    pokemon_id = Column(Integer)
+    id = Column(Integer, primary_key=True)
+    move_id = Column(Integer, ForeignKey("moves.move_id"))
+    pokemon_id = Column(Integer, ForeignKey("pokemon.id"))
     level_learned = Column(Integer)
     learn_method = Column(String)
     game_version = Column(String)
 
-    pokemon = relationship("Pokemon", back_populates="pokemonmovesmapping")
+    move = relationship("Moves", backref="pokemon_moves")
+    pokemon = relationship("Pokemon", back_populates="moves")
+

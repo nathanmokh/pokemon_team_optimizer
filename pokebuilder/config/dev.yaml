@@ -1,4 +1,8 @@
 num_pokemon: 1008
 loading_batch_size: 3
-
-  
+db:
+  user: postgres
+  password: '{{ DB_PASSWORD }}' # jinja templating for an env variable
+  dbname: pokemon
+  host: localhost
+  port: 5432
