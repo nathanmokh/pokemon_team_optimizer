@@ -71,3 +71,20 @@ class PokemonMovesMapping(db.Model):
     move = relationship("Moves", backref="pokemon_moves")
     pokemon = relationship("Pokemon", back_populates="moves")
 
+
+class Sprites(Base):
+    __tablename__ = "sprites"
+
+    pokemon_id = Column(Integer)
+    official_artwork = Column(String)
+    official_artwork_shiny = Column(String)
+    back_default = Column(String)
+    back_female = Column(String)
+    front_default = Column(String)
+    front_female = Column(String)
+    back_shiny = Column(String)
+    back_shiny_female = Column(String)
+    front_shiny = Column(String)
+    front_shiny_female = Column(String)
+
+    pokemon = relationship("Pokemon", back_populates="sprites")
