@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS pokemonMovesMapping (
     pokemon_id INTEGER,
     level_learned INTEGER,
     learn_method VARCHAR(32),
-    game_version VARCHAR(32)
+    game_version VARCHAR(64)
 );

@@ -9,8 +9,8 @@ pokemon_alias = aliased(Pokemon)
 pmm_alias = aliased(PokemonMovesMapping)
 moves_alias = aliased(Moves)
 
-def get_pokemon_moveset_query(app, pokemon_id, game_version):
 
+def get_pokemon_moveset_endpoint(pokemon_id, game_version):
     query = (
         db.session.query(
             Pokemon.pokemon_name,
@@ -25,7 +25,7 @@ def get_pokemon_moveset_query(app, pokemon_id, game_version):
             moves_alias.accuracy,
             moves_alias.category,
             moves_alias.crit_rate,
-            moves_alias.damage_class
+            moves_alias.damage_class,
         )
         .join(pmm_alias, Pokemon.id == pmm_alias.pokemon_id)
         .join(moves_alias, moves_alias.move_id == pmm_alias.move_id)
@@ -34,5 +34,9 @@ def get_pokemon_moveset_query(app, pokemon_id, game_version):
     )
 
     result = query.all()
-    
+    # Convert the result tuples to dictionaries using _asdict(), each key corresponds to the col name
+    result_dicts = [row._asdict() for row in result]
+    return {"count": len(result), "data": result_dicts}
+
+
 # get_pokemon_moveset_query(150, 'yellow')

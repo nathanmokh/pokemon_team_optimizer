@@ -75,7 +75,7 @@ class PokemonMovesMapping(db.Model):
 class Sprites(Base):
     __tablename__ = "sprites"
 
-    pokemon_id = Column(Integer)
+    pokemon_id = Column(Integer, primary_key=True)
     official_artwork = Column(String)
     official_artwork_shiny = Column(String)
     back_default = Column(String)
