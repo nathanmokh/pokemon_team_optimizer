@@ -1,6 +1,5 @@
 import requests
-import logging
-from src.pokemon.util.db_utils import execute_sql, get_db_connection, load_sql
+from src.pokemon.util.db_utils import execute_sql
 from src.pokemon.util.common_utils import get_config
 
 
