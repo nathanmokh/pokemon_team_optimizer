@@ -70,7 +70,7 @@ def load_natures_table():
             "populate_nature_table.sql",
             substitutions ={"values": rows},
             is_ddl_statement=True
-        )
+         )
 
 if __name__ == "__main__":
     load_natures_table()
