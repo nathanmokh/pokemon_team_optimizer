@@ -17,7 +17,7 @@ db.init_app(app)
 
 
 @app.route("/")
-def random_pokemon():
+def get_random_pokemon():
     return jsonify(message="Pokebuilder")
 
 

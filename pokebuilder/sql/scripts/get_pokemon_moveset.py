@@ -1,8 +1,10 @@
 from sqlalchemy.orm import aliased
 from sqlalchemy import and_
 from extensions import db
+from pokebuilder.sql.models.moves import Moves
+from pokebuilder.sql.models.moves_mapping import PokemonMovesMapping
+from pokebuilder.sql.models.pokemon import Pokemon
 
-from pokebuilder.models import Moves, Pokemon, PokemonMovesMapping
 
 # Define aliases for the table names
 pokemon_alias = aliased(Pokemon)
