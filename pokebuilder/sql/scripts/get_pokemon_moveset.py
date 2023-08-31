@@ -37,6 +37,3 @@ def get_pokemon_moveset_endpoint(pokemon_id, game_version):
     # Convert the result tuples to dictionaries using _asdict(), each key corresponds to the col name
     result_dicts = [row._asdict() for row in result]
     return {"count": len(result), "data": result_dicts}
-
-
-# get_pokemon_moveset_query(150, 'yellow')

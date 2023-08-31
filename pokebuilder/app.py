@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, abort
 from flask import jsonify
 from config import Config
 from extensions import db
@@ -26,6 +26,8 @@ def get_moves_for_pokemon():
     args = request.args
     pokemon_id = args.get("pokemon_id")
     game_version = args.get("game_version")
+    if not game_version:
+        abort(400, "Missing game_version parameter")
     return get_pokemon_moveset_endpoint(pokemon_id, game_version)
 
 
