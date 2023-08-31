@@ -1,7 +1,7 @@
-requests
-PyYAML
-python-dotenv
-pokebase
+Flask
+Flask-SQLAlchemy
 psycopg2
 jinja2
-psycopg2-binary
+PyYAML
+requests
+pokebase

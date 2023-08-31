@@ -6,4 +6,3 @@ db:
   dbname: pokemon
   host: localhost
   port: 5432
-  
