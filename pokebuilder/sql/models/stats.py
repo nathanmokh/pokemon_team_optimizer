@@ -10,8 +10,8 @@ class Stats(db.Model):
     hp = Column(Integer)
     attack = Column(Integer)
     defense = Column(Integer)
-    sp_attack = Column(Integer)
-    sp_defense = Column(Integer)
+    special_attack = Column(Integer)
+    special_defense = Column(Integer)
     speed = Column(Integer)
 
     pokemon = relationship("Pokemon", back_populates="stats")

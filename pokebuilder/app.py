@@ -1,9 +1,7 @@
-from flask import Flask, abort
-from flask import jsonify
+from flask import Flask
 from config import Config
 from extensions import db
-from pokebuilder.sql.scripts.get_pokemon_moveset import get_pokemon_moveset_endpoint
-from flask import request
+from pokebuilder.routes.pokemon_info import pokemon_routes
 
 app = Flask(__name__)
 app.config.from_object(obj=Config)
@@ -13,22 +11,9 @@ app.config.from_object(obj=Config)
 db.init_app(app)
 
 
-# Routes
+# Blueprints
 
-
-@app.route("/")
-def get_random_pokemon():
-    return jsonify(message="Pokebuilder")
-
-
-@app.route("/api/getPokemonMoveset")
-def get_moves_for_pokemon():
-    args = request.args
-    pokemon_id = args.get("pokemon_id")
-    game_version = args.get("game_version")
-    if not game_version:
-        abort(400, "Missing game_version parameter")
-    return get_pokemon_moveset_endpoint(pokemon_id, game_version)
+app.register_blueprint(pokemon_routes)
 
 
 if __name__ == "__main__":

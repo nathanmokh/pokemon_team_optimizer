@@ -30,3 +30,14 @@ def parse_id_from_end_of_url(url):
 
 def get_currently_loaded_pokemon_move_ids():
     return [record[0] for record in execute_sql(raw_sql="SELECT move_id FROM moves;")]
+
+
+def create_api_response(data=None, success=True, message=None, error=None):
+    response = {
+        "count": len(data),
+        "success": success,
+        "data": data,
+        "message": message,
+        "error": error,
+    }
+    return response
