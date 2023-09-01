@@ -20,8 +20,3 @@ class Moves(db.Model):
     crit_rate = Column(Integer)
     stat_chance = Column(Integer)
     drain = Column(Integer)
-
-    # pokemon_moves_mapping_id = Column(
-    #     Integer, ForeignKey("pokemonmovesmapping.move_id")
-    # )
-    # pokemon = relationship("PokemonMovesMapping", back_populates="moves")
