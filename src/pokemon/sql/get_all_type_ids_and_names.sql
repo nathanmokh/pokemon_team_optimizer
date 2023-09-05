@@ -1,0 +1,1 @@
+SELECT type_id, type_name FROM types;
