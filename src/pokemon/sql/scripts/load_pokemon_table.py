@@ -46,7 +46,6 @@ def load_pokemon_table():
             type2,
             role,
         )
-    
 
     config = get_config()
 
