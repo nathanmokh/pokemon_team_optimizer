@@ -1,38 +1,31 @@
-<h1> Poke-Builder </h1>
-<p><i>By: Nathan Mokhtarzadeh, Jonah Mokhtarzadeh, Zachary Mokhtarzadeh, David Golshirazian</i></p>
+# Poke-Builder
+*By: Nathan Mokhtarzadeh, Jonah Mokhtarzadeh, Zachary Mokhtarzadeh, David Golshirazian*
 
-<h2>A pokemon team builder project!</h2>
-<p> The purpose of this project is to create a team builder/optimizer for pokemon. Feature suggestions are welcome, the goal is to build a system that will auto update with the newest pokemon from the PokeAPI, and be able to create the "optimal" team given certain parameters and constraints. We are using a wrapper for the Pokemon API called <a href="https://github.com/PokeAPI/pokebase">Pokebase</a> Pokebase comes with auto caching which will be a significant performance boost over using the PokeAPI directly.
+## Pokemon Team Builder Project!
+The purpose of this project is to create a team builder/optimizer for pokemon. 
+Feature suggestions are welcome, the goal is to build a system that will auto update with the newest pokemon from the PokeAPI, and be able to create the "optimal" team given certain parameters and constraints. 
+We are using a wrapper for the Pokemon API called [Pokebase](https://github.com/PokeAPI/pokebase/) which comes with auto caching which will be a significant performance boost over using the PokeAPI directly.
 
-<h2>Install Dependencies:</h2>
-<ol>
-    <li>
-    <p><a href="https://www.postgresql.org/download/"> Install PostgreSQL</a> and create a database named <i>pokemon</i> hosted on localhost for development. (You can name it something else if you would like to modify the configs)</p>
-    </li>
-    <li>
-    <p>Assuming python and pip are installed, the dependencies can be installed by cloning the repo and using the command in the main directory: 
-    <br> <code> pip install -r requirements.txt </code>
-    <br>
-    this will ensure you have the latest versions of the dependencies being used. Remember to create a virtual environment to install the dependencies to, documentation for this can be found <a href="https://docs.python.org/3/library/venv.html">here</a>.</p>
-    </li>
-</ol>
+## Install Dependencies
+TODO:
+- Add [init script](https://stackoverflow.com/questions/33309121/using-docker-compose-to-create-tables-in-postgresql-database) to Compose to create `pokemon` database
+- Designate Python Version, 3.10?
+- Create virtual environment using [venv](https://docs.python.org/3/library/venv.html) or [conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#activating-an-environment)
+- setup environemnt using `pip install` or `conda create`   
 
-<h2>Additional setup steps</h2>
-<ol>
-    <li>
-    <p> Add your PostgreSQL password to your env, match the key with the value in <code>config/dev.yaml</code>
-    </p>
-    </li>
-    <li>
-    <p>As of writing this now there aren't a whole lot of other steps, table creation and population scripts will be stored in the repo so that should populate the db for you when setting the project up.</p>
-    </li>
-</ol>
+## Local Environment Setup
+- Create `.dbenv` which will hold environment variables for PostgreSQL
+```bash
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_DB=pokemon
+```
+- Create `.flaskenv` which will hold the necessary environment variables for flask. Example:
+```bash
+FLASK_SECRET_KEY=123456789
+SQLALCHEMY_DATABASE_URI=postgresql://postgres:password@localhost:5432/pokemon
+```
+- Start up the database first and then the flask app
 
-<h2><a href="https://trello.com/b/u5sFBvQs/poke-builder">Trello Board 🥇</a></h2>
+## [Trello Board 🥇](https://trello.com/b/u5sFBvQs/poke-builder)
 
-<h2>Helpful Documentation:</h2>
-<ul>
-    <li><a href="https://pokebase.readthedocs.io/en/latest/">Pokebase Documentation</a></li>
-    <li><a href="https://www.postgresql.org/docs/">PostgreSQL Documentation</a></li>
-    <li><a href="https://pokeapi.co/docs/v2">PokeAPI Documentation</a></li>
-</ul>

@@ -1,2 +1,2 @@
 SELECT pokemon_id
-FROM stats;
+FROM sprites;
