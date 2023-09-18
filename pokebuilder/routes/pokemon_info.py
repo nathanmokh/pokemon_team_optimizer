@@ -48,19 +48,19 @@ def get_pokemon_stats_endpoint():
     pokemon_id = args.get("pokemon_id")
     pokemon_name = args.get("pokemon_name")
     base_stats = args.get("base_stats") == "true"
-    hp_iv = (args.get("hp_iv"),)
-    hp_ev = (args.get("hp_ev"),)
-    attack_iv = (args.get("attack_iv"),)
-    attack_ev = (args.get("attack_ev"),)
-    defense_iv = (args.get("defense_iv"),)
-    defense_ev = (args.get("defense_ev"),)
-    special_attack_iv = (args.get("special_attack_iv"),)
-    special_attack_ev = (args.get("special_attack_ev"),)
-    special_defense_iv = (args.get("special_defense_iv"),)
-    special_defense_ev = (args.get("special_defense_ev"),)
-    speed_iv = (args.get("speed_iv"),)
-    speed_ev = args.get("speed_ev")
-    level = args.get("level")
+    hp_iv = int(args.get("hp_iv"))
+    hp_ev = int(args.get("hp_ev"))
+    attack_iv = int(args.get("attack_iv"))
+    attack_ev = int(args.get("attack_ev"))
+    defense_iv = int(args.get("defense_iv"))
+    defense_ev = int(args.get("defense_ev"))
+    special_attack_iv = int(args.get("special_attack_iv"))
+    special_attack_ev = int(args.get("special_attack_ev"))
+    special_defense_iv = int(args.get("special_defense_iv"))
+    special_defense_ev = int(args.get("special_defense_ev"))
+    speed_iv = int(args.get("speed_iv"))
+    speed_ev = int(args.get("speed_ev"))
+    level = int(args.get("level"))
 
     return create_api_response(
         get_pokemon_stats(
@@ -79,6 +79,6 @@ def get_pokemon_stats_endpoint():
             special_defense_ev=special_defense_ev,
             speed_iv=speed_iv,
             speed_ev=speed_ev,
-            level=level
+            level=level,
         )
     )

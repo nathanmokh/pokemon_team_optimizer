@@ -103,8 +103,8 @@ def get_pokemon_stats(
     speed_iv=0,
     speed_ev=0,
     level=100,
+    nature="adament",
 ):
-    
     # First get the base stats for the given pokemon
     if not pokemon_id and not pokemon_name:
         raise ValueError
@@ -128,14 +128,19 @@ def get_pokemon_stats(
         results = results._asdict()
 
     elif pokemon_name and not pokemon_id:
-        query = db.session.query(
-            Stats.hp,
-            Stats.attack,
-            Stats.special_attack,
-            Stats.defense,
-            Stats.special_defense,
-            Stats.speed,
-        ).filter(Stats.pokemon_id == pokemon_id)
+        query = (
+            db.session.query(
+                stats_alias.hp,
+                stats_alias.attack,
+                stats_alias.special_attack,
+                stats_alias.defense,
+                stats_alias.special_defense,
+                stats_alias.speed,
+            )
+            .select_from(Pokemon)
+            .join(stats_alias, stats_alias.pokemon_id == Pokemon.id)
+            .filter(Pokemon.pokemon_name == pokemon_name.lower())
+        )
 
         results = query.all()
 
@@ -150,5 +155,22 @@ def get_pokemon_stats(
         return results
 
     # run calculations for EVs and IVs and level
-    if pokemon_id:
-        StatsCalculator().calculate_stats()
+
+    return StatsCalculator().calculate_stats(
+        hp=(results["hp"], hp_iv, hp_ev),
+        attack=(results["attack"], attack_iv, attack_ev),
+        defense=(results["defense"], defense_iv, defense_ev),
+        special_attack=(
+            results["special_attack"],
+            special_attack_iv,
+            special_attack_ev,
+        ),
+        special_defense=(
+            results["special_defense"],
+            special_defense_iv,
+            special_defense_ev,
+        ),
+        speed=(results["speed"], speed_iv, speed_ev),
+        nature=nature,
+        level=level,
+    )
