@@ -6,13 +6,11 @@ from pokebuilder.sql.models.pokemon import Pokemon
 from pokebuilder.sql.models.moves import Moves
 from pokebuilder.sql.models.moves_mapping import PokemonMovesMapping
 
+
 class Types(db.Model):
     __tablename__ = "types"
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     type_name = Column(String)
-    
+
     pokemon = relationship("Pokemon", backref="type")
-
-
-x = 3
