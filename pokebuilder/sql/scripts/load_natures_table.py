@@ -54,9 +54,7 @@ def load_natures_table():
 
         return (nature_id, name, increased_stat, decreased_stat)
 
-    config = get_config()
-
-    execute_sql("create_nature_table.sql", is_ddl_statement=True)
+    execute_sql("create_nature_table.sql")
     currently_loaded_nature_ids = execute_sql("get_nature_ids_from_nature_table.sql")
     currently_loaded_nature_ids = {
         record[0]: None for record in currently_loaded_nature_ids
@@ -68,7 +66,6 @@ def load_natures_table():
         execute_sql(
             "populate_nature_table.sql",
             substitutions={"values": rows},
-            is_ddl_statement=True,
         )
 
 

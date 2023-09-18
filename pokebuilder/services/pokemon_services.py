@@ -107,7 +107,7 @@ def get_pokemon_stats(
 ):
     # First get the base stats for the given pokemon
     if not pokemon_id and not pokemon_name:
-        raise ValueError
+        abort(500, "No pokemon ID or name given")
 
     if pokemon_id:
         query = db.session.query(
