@@ -1,2 +1,4 @@
-SELECT id
-FROM nature;
+SELECT
+    id
+FROM
+    nature;
