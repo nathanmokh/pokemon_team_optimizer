@@ -1,2 +1,4 @@
-SELECT id
-FROM pokemon_natures;
+SELECT
+    id
+FROM
+    nature;
