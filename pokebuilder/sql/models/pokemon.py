@@ -13,8 +13,7 @@ class Pokemon(db.Model):
     type_2 = Column(String)
     team_role = Column(String)
 
-    type_id = Column(Integer, ForeignKey('types.id'))
+    type_id = Column(Integer, ForeignKey("types.id"))
 
     stats = relationship("Stats", back_populates="pokemon")
     moves = relationship("PokemonMovesMapping", back_populates="pokemon")
-    
