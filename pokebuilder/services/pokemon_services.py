@@ -83,3 +83,10 @@ def get_random_team():
             ret.append(random_pokemon)
             pokemon_names.append(random_pokemon["pokemon_name"])
     return ret
+
+
+def get_type():
+    pass
+
+
+# TODO Z-CREATE
