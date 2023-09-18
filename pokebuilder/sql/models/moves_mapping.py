@@ -1,6 +1,6 @@
 from sqlalchemy import ForeignKey, Column, Integer, String
 from sqlalchemy.orm import relationship
-from extensions import db
+from pokebuilder.extensions import db
 
 
 class PokemonMovesMapping(db.Model):

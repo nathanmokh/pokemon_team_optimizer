@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from extensions import db
+from pokebuilder.extensions import db
 
 
 class Moves(db.Model):
