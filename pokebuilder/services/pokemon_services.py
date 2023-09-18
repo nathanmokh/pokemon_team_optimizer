@@ -103,7 +103,7 @@ def get_pokemon_stats(
     speed_iv=0,
     speed_ev=0,
     level=100,
-    nature="adament",
+    nature="adamant",
 ):
     # First get the base stats for the given pokemon
     if not pokemon_id and not pokemon_name:

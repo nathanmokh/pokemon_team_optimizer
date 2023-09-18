@@ -61,6 +61,7 @@ def get_pokemon_stats_endpoint():
     speed_iv = int(args.get("speed_iv"))
     speed_ev = int(args.get("speed_ev"))
     level = int(args.get("level"))
+    nature = args.get("nature")
 
     return create_api_response(
         get_pokemon_stats(
@@ -80,5 +81,6 @@ def get_pokemon_stats_endpoint():
             speed_iv=speed_iv,
             speed_ev=speed_ev,
             level=level,
+            nature=nature,
         )
     )

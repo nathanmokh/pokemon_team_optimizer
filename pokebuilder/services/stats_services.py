@@ -1,3 +1,8 @@
+from flask import abort
+from sql.models.natures import Natures
+from extensions import db
+
+
 class StatsCalculator:
     def calculate_stats(
         self,
@@ -30,8 +35,8 @@ class StatsCalculator:
             "hp": hp,
             "attack": attack,
             "defense": defense,
-            "special_attack": special_attack,
-            "special_defense": special_defense,
+            "special-attack": special_attack,
+            "special-defense": special_defense,
             "speed": speed,
         }
 
@@ -42,7 +47,9 @@ class StatsCalculator:
                 base_stat, iv, ev = stat_values
                 calculated["hp"] = self._calculate_hp(base_stat, iv, ev, level)
             else:
-                nature_effect_1, nature_effect_2 = self._get_nature_modifiers(nature)
+                nature_effect_1, nature_effect_2 = self._get_nature_modifiers_from_db(
+                    nature
+                )
 
                 if stat_name == nature_effect_1[0]:
                     nature_mod = nature_effect_1[1]
@@ -84,28 +91,18 @@ class StatsCalculator:
 
     def _get_nature_modifiers(self, nature):
         """Placeholder for adamant nature as of now"""
-        return ("attack", 1.1), ("special_attack", 0.9)
+        return ("attack", 1.1), ("special-attack", 0.9)
 
     def _get_nature_modifiers_from_db(self, nature):
-        pass
-
-
-result = StatsCalculator().calculate_stats(
-    hp=(108, 24, 74),
-    attack=(130, 12, 190),
-    defense=(95, 30, 91),
-    special_attack=(80, 16, 48),
-    special_defense=(85, 23, 84),
-    speed=(102, 5, 23),
-    nature="adamant",
-    level=78,
-)
-
-assert len(result) == 6
-assert result["hp"] == 289
-assert result["attack"] == 278
-assert result["defense"] == 193
-assert result["special_attack"] == 135
-assert result["special_defense"] == 171
-assert result["speed"] == 171
-print(result)
+        query = db.session.query(Natures.increased_stat, Natures.decreased_stat).filter(
+            Natures.name == nature.lower()
+        )
+        result = query.all()
+        if not result:
+            abort(500, "Could not find nature {nature}")
+        result = result[0]
+        buffed_stat, nerfed_stat = result
+        if not buffed_stat and not nerfed_stat:
+            # placeholder, use to not modify any stats
+            return ("attack", 1), ("attack", 1)
+        return (buffed_stat, 1.1), (nerfed_stat, 0.9)

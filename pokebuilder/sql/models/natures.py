@@ -9,7 +9,7 @@ from pokebuilder.sql.models.types import Types
 
 
 class Natures(db.Model):
-    __tablename__ = "natures"
+    __tablename__ = "nature"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
