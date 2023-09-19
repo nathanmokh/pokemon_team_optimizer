@@ -6,6 +6,7 @@ from pokebuilder.sql.models.moves import Moves
 from pokebuilder.sql.models.moves_mapping import PokemonMovesMapping
 from pokebuilder.sql.models.pokemon import Pokemon
 from pokebuilder.sql.models.stats import Stats
+from services.stats_services import StatsCalculator
 from src.pokemon.util.common_utils import get_current_number_of_pokemon_pokeapi
 import random
 
@@ -85,8 +86,91 @@ def get_random_team():
     return ret
 
 
-def get_type():
-    pass
+def get_pokemon_stats(
+    pokemon_id=None,
+    pokemon_name=None,
+    base_stats=False,
+    hp_iv=0,
+    hp_ev=0,
+    attack_iv=0,
+    attack_ev=0,
+    defense_iv=0,
+    defense_ev=0,
+    special_attack_iv=0,
+    special_attack_ev=0,
+    special_defense_iv=0,
+    special_defense_ev=0,
+    speed_iv=0,
+    speed_ev=0,
+    level=100,
+    nature="adamant",
+):
+    # First get the base stats for the given pokemon
+    if not pokemon_id and not pokemon_name:
+        abort(500, "No pokemon ID or name given")
 
+    if pokemon_id:
+        query = db.session.query(
+            Stats.hp,
+            Stats.attack,
+            Stats.special_attack,
+            Stats.defense,
+            Stats.special_defense,
+            Stats.speed,
+        ).filter(Stats.pokemon_id == pokemon_id)
 
-# TODO Z-CREATE
+        results = query.all()
+
+        if not results:
+            abort(500, "No pokemon in database")
+
+        results = results[0]
+        results = results._asdict()
+
+    elif pokemon_name and not pokemon_id:
+        query = (
+            db.session.query(
+                stats_alias.hp,
+                stats_alias.attack,
+                stats_alias.special_attack,
+                stats_alias.defense,
+                stats_alias.special_defense,
+                stats_alias.speed,
+            )
+            .select_from(Pokemon)
+            .join(stats_alias, stats_alias.pokemon_id == Pokemon.id)
+            .filter(Pokemon.pokemon_name == pokemon_name.lower())
+        )
+
+        results = query.all()
+
+        if not results:
+            abort(500, "No pokemon in database")
+
+        results = results[0]
+        results = results._asdict()
+
+    # if only base stats are being requested, just return those
+    if base_stats:
+        return results
+
+    # run calculations for EVs and IVs and level
+
+    return StatsCalculator().calculate_stats(
+        hp=(results["hp"], hp_iv, hp_ev),
+        attack=(results["attack"], attack_iv, attack_ev),
+        defense=(results["defense"], defense_iv, defense_ev),
+        special_attack=(
+            results["special_attack"],
+            special_attack_iv,
+            special_attack_ev,
+        ),
+        special_defense=(
+            results["special_defense"],
+            special_defense_iv,
+            special_defense_ev,
+        ),
+        speed=(results["speed"], speed_iv, speed_ev),
+        nature=nature,
+        level=level,
+    )

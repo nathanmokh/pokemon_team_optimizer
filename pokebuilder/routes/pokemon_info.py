@@ -4,6 +4,7 @@ from flask import request
 
 from pokebuilder.services.pokemon_services import (
     get_pokemon_moveset_endpoint,
+    get_pokemon_stats,
     get_random_pokemon,
     get_random_team,
 )
@@ -39,3 +40,47 @@ def get_random_pokemon_endpoint():
 @pokemon_routes.route("/api/pokemon/getRandomTeam")
 def get_random_pokemon_team_endpoint():
     return create_api_response(get_random_team())
+
+
+@pokemon_routes.route("/api/pokemon/getStats")
+def get_pokemon_stats_endpoint():
+    args = request.args
+    pokemon_id = args.get("pokemon_id")
+    pokemon_name = args.get("pokemon_name")
+    base_stats = args.get("base_stats") == "true"
+    hp_iv = int(args.get("hp_iv"))
+    hp_ev = int(args.get("hp_ev"))
+    attack_iv = int(args.get("attack_iv"))
+    attack_ev = int(args.get("attack_ev"))
+    defense_iv = int(args.get("defense_iv"))
+    defense_ev = int(args.get("defense_ev"))
+    special_attack_iv = int(args.get("special_attack_iv"))
+    special_attack_ev = int(args.get("special_attack_ev"))
+    special_defense_iv = int(args.get("special_defense_iv"))
+    special_defense_ev = int(args.get("special_defense_ev"))
+    speed_iv = int(args.get("speed_iv"))
+    speed_ev = int(args.get("speed_ev"))
+    level = int(args.get("level"))
+    nature = args.get("nature")
+
+    return create_api_response(
+        get_pokemon_stats(
+            pokemon_id=pokemon_id,
+            pokemon_name=pokemon_name,
+            base_stats=base_stats,
+            hp_iv=hp_iv,
+            hp_ev=hp_ev,
+            attack_iv=attack_iv,
+            attack_ev=attack_ev,
+            defense_iv=defense_iv,
+            defense_ev=defense_ev,
+            special_attack_iv=special_attack_iv,
+            special_attack_ev=special_attack_ev,
+            special_defense_iv=special_defense_iv,
+            special_defense_ev=special_defense_ev,
+            speed_iv=speed_iv,
+            speed_ev=speed_ev,
+            level=level,
+            nature=nature,
+        )
+    )
