@@ -1,5 +1,5 @@
 # Poke-Builder
-*By: Nathan Mokhtarzadeh, Jonah Mokhtarzadeh, Zachary Mokhtarzadeh, David Golshirazian*
+*By: Nathan Mokhtarzadeh, Jonah Mokhtarzadeh, Zachary Mokhtarzadeh, David Golshirazian, Austin Boling*
 
 ## Pokemon Team Builder Project!
 The purpose of this project is to create a team builder/optimizer for pokemon. 
